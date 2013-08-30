@@ -74,7 +74,7 @@ function doNotify(evt) {
 	var options = null;
 	var sBtn1 = document.getElementById("btn1").value;
 	var sBtn2 = document.getElementById("btn2").value;
-	var sBtn1URL = "http://www.google.com";
+
 	// Create the right notification for the selected type
 	if (evt.srcElement.id == "basic") {
 		options = notOptions[0];
