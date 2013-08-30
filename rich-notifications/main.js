@@ -57,15 +57,12 @@ window.addEventListener("load", function() {
 });
 
 // random image
-var imgArray = ['tahoe-320x215.png', 'img1.png', 'img2.png', 'img3.png', 'img4.png'];
+var imgArray = ['tahoe-320x215.png', 'img1.png', 'img2.jpg', 'img3.png', 'img4.png'];
 var basePath="/images/";
 
 function imgRandom() {
-    for (var i = 0; i < 1; i++) {
-        var rand = imgArray[Math.floor(Math.random() * imgArray.length)];
-        imageSource = '"'+basePath+rand+'"';
-        document.write(imageSource);
-    }
+    var rand = imgArray[Math.floor(Math.random() * imgArray.length)];
+    return basePath+rand;
 }
 
 //imgRandom();
@@ -73,8 +70,6 @@ function imgRandom() {
 // Create the notification with the given parameters as they are set in the UI
 function doNotify(evt) {
 
-	var dynamicImgUrl = imgRandom();
-	
 	var path = chrome.runtime.getURL(asURLs[document.getElementById("img").options.selectedIndex]);
 	var options = null;
 	var sBtn1 = document.getElementById("btn1").value;
@@ -86,8 +81,7 @@ function doNotify(evt) {
 	}
 	else if (evt.srcElement.id == "image") {
 		options = notOptions[1];
-		//options.imageUrl = chrome.runtime.getURL("/images/tahoe-320x215.png");
-		options.imageUrl = chrome.runtime.getURL(dynamicImgUrl);
+		options.imageUrl = chrome.runtime.getURL("/images/tahoe-320x215.png");
 	}
 	else if (evt.srcElement.id == "list") {
 		options = notOptions[2];
@@ -109,6 +103,11 @@ function doNotify(evt) {
 
 function creationCallback(notID) {
 	console.log("Succesfully created " + notID + " notification");
+	setInterval(function () {
+		var options = notOptions[1];
+		options.imageUrl = chrome.runtime.getURL(imgRandom());
+		chrome.notifications.update(notID, options, function () {});
+	}, 500);
 }
 
 // Event handlers for the various notification events
