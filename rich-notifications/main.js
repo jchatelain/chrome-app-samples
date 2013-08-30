@@ -56,19 +56,38 @@ window.addEventListener("load", function() {
 	chrome.notifications.onButtonClicked.addListener(notificationBtnClick);
 });
 
+// random image
+var imgArray = ['tahoe-320x215.png', 'img1.png', 'img2.png', 'img3.png', 'img4.png'];
+var basePath="/images/";
+
+function imgRandom() {
+    for (var i = 0; i < 1; i++) {
+        var rand = imgArray[Math.floor(Math.random() * imgArray.length)];
+        imageSource = '"'+basePath+rand+'"';
+        document.write(imageSource);
+    }
+}
+
+//imgRandom();
+
 // Create the notification with the given parameters as they are set in the UI
 function doNotify(evt) {
+
+	var dynamicImgUrl = imgRandom();
+	
 	var path = chrome.runtime.getURL(asURLs[document.getElementById("img").options.selectedIndex]);
 	var options = null;
 	var sBtn1 = document.getElementById("btn1").value;
 	var sBtn2 = document.getElementById("btn2").value;
+	var sBtn1URL = "http://www.google.com";
 	// Create the right notification for the selected type
 	if (evt.srcElement.id == "basic") {
 		options = notOptions[0];
 	}
 	else if (evt.srcElement.id == "image") {
 		options = notOptions[1];
-		options.imageUrl = chrome.runtime.getURL("/images/tahoe-320x215.png");
+		//options.imageUrl = chrome.runtime.getURL("/images/tahoe-320x215.png");
+		options.imageUrl = chrome.runtime.getURL(dynamicImgUrl);
 	}
 	else if (evt.srcElement.id == "list") {
 		options = notOptions[2];
